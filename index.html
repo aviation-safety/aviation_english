@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyEnglish — Daily Goal-Oriented Aviation Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+</head>
+<body>
+
+  <!-- ─── NAVIGATION ─────────────────────────────────────── -->
+  <nav class="navbar">
+    <a href="#" class="navbar-brand" onclick="app.showSection('dashboard')">
+      <span>✈️</span> SkyEnglish
+    </a>
+    <button class="mobile-menu-btn">☰</button>
+    <ul class="nav-links">
+      <li><a href="#" data-section="dashboard" class="active"><span class="nav-icon">🎯</span> Today's Goals</a></li>
+      <li><a href="#" data-section="assessment"><span class="nav-icon">📊</span> My Level</a></li>
+      <li><a href="#" data-section="curriculum"><span class="nav-icon">🗺️</span> 30-Day Plan</a></li>
+      <li><a href="#" data-section="news"><span class="nav-icon">📰</span> News</a></li>
+      <li><a href="#" data-section="speaking"><span class="nav-icon">🎙️</span> Speaking</a></li>
+      <li><a href="#" data-section="writing"><span class="nav-icon">✍️</span> Writing</a></li>
+      <li><a href="#" data-section="meetings"><span class="nav-icon">🤝</span> Meetings</a></li>
+      <li><a href="#" data-section="interview"><span class="nav-icon">💼</span> Interview</a></li>
+      <li><a href="#" data-section="vocabulary"><span class="nav-icon">📚</span> Idioms</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:0.6rem;">
+      <button class="btn btn-sm btn-outline" style="color:white;border-color:rgba(255,255,255,0.4);font-size:0.75rem;" onclick="app.openImportModal()">
+        ➕ Import News
+      </button>
+      <div class="user-rank-badge" id="nav-rank-badge" onclick="app.showSection('assessment')" style="cursor:pointer;background:rgba(255,255,255,0.15);color:#fff;padding:0.35rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:700;display:flex;align-items:center;gap:0.35rem;border:1px solid rgba(255,255,255,0.25);">
+        <span>👨‍✈️</span> <span id="nav-rank-text">Cadet · 0 XP</span>
+      </div>
+      <div class="streak-badge" id="nav-streak-badge">🔥 1 day streak</div>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN CONTENT ───────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- 1. DAILY GOAL-ORIENTED DASHBOARD -->
+    <section id="section-dashboard" class="page-section active">
+
+      <!-- TOP SECTION: TODAY'S STATUS & CIRCULAR RING CHART -->
+      <div class="daily-hero-container" id="daily-hero-container">
+        <div class="hero-left-col">
+          <div class="hero-day-pill">
+            <span id="hero-day-badge">Day 1 of 30</span> · <span id="hero-theme-title">Aviation Decarbonization & SAF</span>
+          </div>
+          <h1 class="hero-title" id="hero-greeting">Ready to Fly Today's Missions? 🚀</h1>
+          <p class="hero-subtitle" id="hero-subtext">Complete today's 4 focused tasks to build automatic fluency for international meetings and interviews.</p>
+          <div class="hero-day-selector">
+            <button class="day-nav-btn" onclick="app.changeDay(-1)">← Prev Day</button>
+            <button class="day-nav-btn" onclick="app.jumpToCurrentDay()">Today</button>
+            <button class="day-nav-btn" onclick="app.changeDay(1)">Next Day →</button>
+            <button class="day-nav-btn" style="background:rgba(249,115,22,0.25);border-color:#f97316;" onclick="app.showPlanModal()">⚙️ Change Plan</button>
+          </div>
+        </div>
+
+        <div class="hero-right-col">
+          <!-- Circular Ring Chart -->
+          <div class="ring-chart-wrapper" title="Today's Mission Progress">
+            <svg class="ring-chart-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f97316" />
+                  <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="50" cy="50" r="42" />
+              <circle class="ring-progress" id="ring-progress-bar" cx="50" cy="50" r="42" stroke-dasharray="263.89" stroke-dashoffset="197.9" />
+            </svg>
+            <div class="ring-inner-text">
+              <div class="ring-inner-count" id="ring-task-count">1/4</div>
+              <div class="ring-inner-label">Done</div>
+            </div>
+          </div>
+
+          <!-- Flame Streak Card -->
+          <div class="flame-streak-card">
+            <div class="flame-icon">🔥</div>
+            <div class="flame-count" id="hero-streak-count">1 Day</div>
+            <div class="flame-label">Study Streak</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER SECTION: 2-COLUMN DASHBOARD (CENTER-LEFT TASKS & CENTER-RIGHT FOCUS) -->
+      <div class="daily-dashboard-grid">
+        
+        <!-- Center-Left: Daily Mission To-Do List (Primary Focus) -->
+        <div class="daily-tasks-card">
+          <div class="daily-tasks-header">
+            <div>
+              <h2>📋 Today's Flight Missions</h2>
+              <div class="tasks-subtitle">Action-oriented missions tailored to your TOEIC 875 / OPIc IH target</div>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="app.openImportModal()">+ Custom News</button>
+          </div>
+
+          <div class="tasks-list" id="daily-tasks-list">
+            <!-- Dynamically populated tasks -->
+          </div>
+        </div>
+
+        <!-- Center-Right: Focus Zone (Pomodoro & Immersion Mode) -->
+        <div class="focus-zone-card">
+          <div>
+            <div class="focus-zone-header">
+              <h3>⏱️ Immersion Focus Zone</h3>
+              <p>Train deep concentration for meetings without distractions.</p>
+            </div>
+
+            <div class="focus-duration-tabs">
+              <button class="focus-tab-btn active" onclick="app.setPomodoroMinutes(25, this)">25 min</button>
+              <button class="focus-tab-btn" onclick="app.setPomodoroMinutes(15, this)">15 min</button>
+              <button class="focus-tab-btn" onclick="app.setPomodoroMinutes(5, this)">5 min</button>
+            </div>
+
+            <div class="pomodoro-display-box">
+              <div class="pomodoro-digits" id="pomodoro-display">25:00</div>
+              <div class="pomodoro-label" id="pomodoro-status-label">Ready to Focus</div>
+            </div>
+
+            <button class="btn-start-focus" id="btn-toggle-focus" onclick="app.toggleFocusTimer()">
+              <span>🚀 Start Focus & Immersion Mode</span>
+            </button>
+          </div>
+
+          <div class="focus-stats-mini">
+            <span>Today's Focus: <strong id="focus-today-minutes">0 mins</strong></span>
+            <span>Spoken: <strong id="focus-today-speaking">2.0 mins</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM SECTION: INSIGHTS & REWARDS -->
+      <div class="daily-insights-grid">
+        
+        <!-- Weekly Accomplishment Bar Graph -->
+        <div class="weekly-graph-card">
+          <h3>📊 Weekly Flight Log</h3>
+          <p style="font-size:0.85rem;color:#64748b;">Daily study consistency over the last 7 days</p>
+          <div class="weekly-bars-container" id="weekly-bars-container">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Gamified Reward Chest -->
+        <div class="reward-chest-card" onclick="app.clickRewardChest()">
+          <div class="chest-icon-wrapper" id="chest-icon">🎁</div>
+          <div class="chest-title" id="chest-title">Weekly Flight Bonus</div>
+          <div class="chest-desc" id="chest-desc">Clear 3 daily missions to unlock +100 bonus XP!</div>
+          <div class="chest-progress-pill" id="chest-pill">Progress: 2/3 Quests</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 2. FULL 30-DAY ROADMAP EXPLORER -->
+    <section id="section-curriculum" class="page-section">
+      <div class="section-header">
+        <h2>🗺️ 30-Day Aviation Fluency Curriculum</h2>
+        <p>Explore all 30 days of authentic aviation and business communication themes.</p>
+      </div>
+      <div id="curriculum-grid-container" class="dashboard-grid">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- 3. LEVEL ASSESSMENT DIAGNOSTIC -->
+    <section id="section-assessment" class="page-section">
+      <div id="assessment-content"></div>
+    </section>
+
+    <!-- 4. AVIATION NEWS -->
+    <section id="section-news" class="page-section">
+      <div id="news-content"></div>
+    </section>
+
+    <!-- 5. MEETING ENGLISH -->
+    <section id="section-meetings" class="page-section">
+      <div id="meetings-content"></div>
+    </section>
+
+    <!-- 6. SPEAKING PRACTICE -->
+    <section id="section-speaking" class="page-section">
+      <div id="speaking-content"></div>
+    </section>
+
+    <!-- 7. WRITING WORKSHOP -->
+    <section id="section-writing" class="page-section">
+      <div id="writing-content"></div>
+    </section>
+
+    <!-- 8. INTERVIEW PREP -->
+    <section id="section-interview" class="page-section">
+      <div id="interview-content"></div>
+    </section>
+
+    <!-- 9. VOCABULARY -->
+    <section id="section-vocabulary" class="page-section">
+      <div id="vocabulary-content"></div>
+    </section>
+
+  </main>
+
+  <!-- ─── IMMERSION MODE (DISTRACTION-FREE OVERLAY) ──────────── -->
+  <div class="immersion-overlay" id="immersion-overlay">
+    <div class="immersion-top-bar">
+      <div style="font-weight:700;display:flex;align-items:center;gap:0.5rem;font-size:1.1rem;">
+        <span>✈️</span> SkyEnglish Immersion Mode
+      </div>
+      <button class="btn-exit-immersion" onclick="app.exitImmersionMode()">✕ Exit Immersion</button>
+    </div>
+
+    <div class="immersion-timer-box">
+      <div class="immersion-timer-digits" id="immersion-timer-digits">25:00</div>
+      <div class="immersion-task-card">
+        <h4>Current Focus Objective</h4>
+        <p id="immersion-current-task-text">Deliver 90-Second Impromptu Speech with Steady Velocity</p>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:center;">
+        <button class="btn btn-accent btn-lg" onclick="app.launchCurrentImmersionTask()">Open Active Task 🚀</button>
+        <button class="btn btn-outline" style="color:white;border-color:white;" onclick="app.pauseFocusTimer()">Pause</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── INTERACTIVE TASK MODAL (SMOOTH IN-PLACE STUDY) ────── -->
+  <div class="task-modal-overlay" id="task-modal-overlay" onclick="if(event.target===this) app.closeTaskModal()">
+    <div class="task-modal-container">
+      <div class="task-modal-header">
+        <h3 id="task-modal-title">Task View</h3>
+        <button class="task-modal-close-btn" onclick="app.closeTaskModal()">✕</button>
+      </div>
+      <div class="task-modal-body" id="task-modal-body">
+        <!-- Injected task content -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OPTION 4: ARTICLE IMPORTER MODAL ──────────────────── -->
+  <div class="import-modal-overlay" id="import-modal-overlay" onclick="if(event.target===this) app.closeImportModal()">
+    <div class="import-modal">
+      <h2>➕ Import Custom Aviation News</h2>
+      <p>Paste any real-world article or press release. The platform will automatically turn it into vocabulary flashcards, a comprehension test, and discussion prompts!</p>
+      
+      <div class="import-form-group">
+        <label>Article Headline</label>
+        <input type="text" id="import-article-title" placeholder="e.g. Pratt & Whitney Announces New Engine Overhaul Facility in Asia">
+      </div>
+      <div class="import-form-group">
+        <label>Category</label>
+        <input type="text" id="import-article-category" placeholder="e.g. Fleet & MRO / Sustainable Fuel / Airport Logistics">
+      </div>
+      <div class="import-form-group">
+        <label>Article Text / Press Release</label>
+        <textarea id="import-article-text" placeholder="Paste the English news article text here (2-4 paragraphs recommended)..."></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:0.75rem;">
+        <button class="btn btn-outline" onclick="app.closeImportModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="app.processImportedArticle()">⚡ Generate Study Pack (+50 XP)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
